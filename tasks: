@@ -1,0 +1,40 @@
+tasks:
+conda install, run pytoarch code on jupyter notebook
+run raw audio files in deep learning model
+annotate the csv files 
+check the sampling of earable
+read the tutorials: cs231 deep learning & Jindong Wang github account
+
+
+
+Data collection setup:
+Earable in Ear
+Phone in right pocket
+36 second recordings, remove the first 3 seconds and 3 last seconds
+Frequency
+
+
+
+Type of data:
+sitting
+walking (slow pace)
+standing
+-----------------------------------------------------
+walking (fast pace)
+ascending stairs
+
+
+
+n x samplerate is the cut
+
+
+Project path:
+connection (app and earable)
+data collection
+dataset preprocessing
+model development: Deep Learning
+
+
+
+concepts:
+windowing
