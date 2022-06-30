@@ -1,0 +1,22 @@
+June 30:
+1.Recorded some more data for the dataset 
+(only counting here the ones that made it to the dataset folder)
+Sitting:10
+Walking: 10
+Standing: 10
+Stairs: 5 
+
+2. Got 1 student to record, there was a mixup with the accelerometer data
+for the first student, so I decided not to include the data. Will try again for more
+students and recording tomorrow.
+
+
+3. They were many duplicates recordings in the dataset folder, delete
+them.
+
+4. Refactored and fixed labeling code, noticed some formatting errors with how I was recording data.
+
+5. Started writing code to visualize the data to check if the data is
+correct
+
+

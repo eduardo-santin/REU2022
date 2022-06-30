@@ -1,0 +1,10 @@
+Esense 3gpp file sample rate: 44100 Hz
+Sample rate in the java code: 50 #assuming its 50Hz
+
+
+Paper from week summary meeting:
+AmicroN: Framework for Generating Micro-Activity Annotations for
+Human Activity Recognition 
+(short paper), 
+Soumyajit Chatterjee and Bivas Mitra (IIT Kharagpur, India); 
+Sandip Chakraborty (Indian Institute of Technology Kharagpur, India)
