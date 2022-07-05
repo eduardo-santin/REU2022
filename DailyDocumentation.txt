@@ -19,4 +19,11 @@ them.
 5. Started writing code to visualize the data to check if the data is
 correct
 
+July 1:
+1. Finished the visualization for the audio.
+2. Fixed some labeling errors and made some functions to help with detecting empty files, 
+deleting duplicates and separating the data from csv and audio files for better readability for me and
+so I dont have to manually do these processes.
+3. Read 3/3 papers sent
+
 

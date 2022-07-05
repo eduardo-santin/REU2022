@@ -1,59 +1,99 @@
-import os
-import sys
+import os, sys, hashlib
 import pandas as pd
 import numpy as np
 # import time, calendar
 
 # dictionary of activities
 activities = {
-    'sitting': '1',
-    'walking': '3',
-    'standing': '2',
-    'stairs': '4',
+    'Sitting': '1',
+    'Walking': '3',
+    'Standing': '2',
+    'Stairs': '4',
 }
 
-def annotate(data_folder):
-    folder = os.path.abspath(folder)
+
+# easier to just download the data from the drive and 
+# elimanate the duplicate files.
+# made this because ill have 1 or 2 duplicates of the same file
+def elim_dupes(data_folder = 'Data'):
+    folder = os.path.abspath(data_folder)
+    # check for duplicate files
+    print('removing duplicates...')
+
+    # check if the file
+    for files in os.listdir(folder):
+        if ( (files.endswith(').xls') or files.endswith(').xls'))
+            or (files.endswith(').csv') or files.endswith(').csv'))
+            or (files.endswith(').3gpp') or files.endswith(').3gpp')) ):
+            os.remove(folder + '/' + files)
+            print('Deleted ' + files)
+            # delete the files
+
+
+
+
+def annotate(data_folder = 'Data'):
+    folder = os.path.abspath(data_folder)
 
     # if it doesn't exist create new folder for annotated data
     if not os.path.exists('./Annotated_Data'):
         os.mkdir('./Annotated_Data')
-    annotated_folder = os.path.abspath('./Annotated_Data')  
+    # create folder for the csv files
+    if not os.path.exists('./Annotated_Data/CSV_Data'):
+        os.mkdir('./Annotated_Data/CSV_Data')
+    annotated_folder = os.path.abspath('./Annotated_Data/CSV_Data')
+    
+    # sometimes the esense earable disconnects
+    # right before recording or it does not update the visualizer that it's disconnected
+    # so just for ease of use, collect all the empty files and delete them
+    empty_files = []
 
+    print('Annotating files...')
     for files in os.listdir(folder):
         #For the data recorded from the esense device
+        
+
         if files.endswith('.xls'):
-            df = pd.read_excel(folder + '/' + files)
+            # grab the first word of the file name so we can label
+            # the dataframe with the activity
+            activity = files.split('_')[0]
+            activity = activity.capitalize()
+
+            
+            df = pd.read_excel(folder + '/' + files, engine='xlrd')
+
+            if df.empty:
+                print(files + ' is empty')
+                # collect the file name in a list
+                empty_files.append(files)
+                continue
+
 
             # label the columns
-            df.columns = ['time', 'Ax', 'Ay', 'Az', 'Gx', 'Gy', 'Gz', 'Activity Label', 'Activity']
+            df.columns = ['time', 'Ax', 'Ay', 'Az', 'Wx', 'Wy', 'Wz', 'Activity Label', 'Activity']
             # delete the first and second row
             df = df[2:]
 
 
-            # grab the first word of the file name so we can label
-            # the dataframe with the activity
-            activity = files.split('_')[0]
-
-            # add a column for the activity at the end of the dataframe 
-            # and fill it with the activity label
-            df['Activity'] = activity.capitalize()
     
             # depending on the activity, we change the 
             # activity label to the corresponding number
             # from our dictionary
-            if activity == 'staying':
-                df['Activity Label'] = activities['sitting']
+            if activity == 'Staying':
+                df['Activity Label'] = activities['Sitting']
 
-            elif activity == 'walking':
-                df['Activity Label'] = activities['walking']
+            elif activity == 'Walking':
+                df['Activity Label'] = activities['Walking']
 
-            elif activity == 'standing':
-                df['Activity Label'] = activities['standing']
+            elif activity == 'Standing':
+                df['Activity Label'] = activities['Standing']
 
-            elif activity == 'stairs':
-                df['Activity Label'] = activities['stairs']
+            elif activity == 'Stairs':
+                df['Activity Label'] = activities['Stairs']
 
+            # add a column for the activity at the end of the dataframe 
+            # and fill it with the activity label
+            df['Activity'] = activity
 
             # The recording for sitting and standing was done with the same
             # label in the esense app since the phone app did not have a different
@@ -61,14 +101,22 @@ def annotate(data_folder):
             # The standing recordings were renamed accordingly instead
             # of the sitting recordings. So to fix this all esense files starting
             # with staying are renamed to sitting to avoid confusion due to my mistake.
-            if activity == 'staying':
-                df.to_csv(annotated_folder + '/' + files.replace('staying', 'sitting') + files.replace('.xls', '_esense.csv'), index=False, encoding='utf-8')
+            if activity == 'Staying':
+                # save the file as a csv and replace staying with 
+                #sitting 
+                split = files.split('.')
+                new_name = split[0]
+                # rename new name with sitting
+                new_name = new_name.replace('Staying', 'Sitting')
+                new_name = new_name + '.csv'
+                df.to_csv(annotated_folder + '/' + new_name, index=False) 
+                
 
             
-            
+            else:
             # save the dataframe to a csv, writing esense on the end
             # to have some clear distinction between the two dataframes
-            df.to_csv(annotated_folder + '/' + files.replace('.xls', '_esense.csv'), index=False, encoding='utf-8')
+                df.to_csv(annotated_folder+ '/' + files.replace('.xls', '_esense.csv'), index=False, encoding='utf-8')
 
 
         #For the data recorded on the smartphone app
@@ -78,30 +126,43 @@ def annotate(data_folder):
             # grab the first word of the file name so we can label
             # the dataframe with the activity
             activity = files.split(' ')[0]
+            activity = activity.capitalize()
 
+            # if they have an unnamed column, delete it
+            if 'Unnamed: 7' in df.columns:
+                df.drop(columns='Unnamed: 7', inplace=True)
 
-            if activity == 'sitting':
-                df['Activity Label'] = activities['sitting']
+            if activity == 'Sitting':
+                df['Activity Label'] = activities['Sitting']
 
-            elif activity == 'walking':
-                df['Activity Label'] = activities['walking']
+            elif activity == 'Walking':
+                df['Activity Label'] = activities['Walking']
 
-            elif activity == 'standing':
-                df['Activity Label'] = activities['standing']
+            elif activity == 'Standing':
+                df['Activity Label'] = activities['Standing']
 
-            elif activity == 'stairs':
-                df['Activity Label'] = activities['stairs']
+            elif activity == 'Stairs':
+                df['Activity Label'] = activities['Stairs']
 
 
 
             # add a column for the activity at the end of the dataframe 
             # and fill it with the activity label
-            df['Activity'] = activity.capitalize()
+            df['Activity'] = activity
     
             # save the dataframe to a csv, writing phone on the end
             # to have some clear distinction between the two dataframes
-            df.to_csv('./Annotated_Data/' + files.replace('.csv', '_phone.csv'), index=False, encoding='utf-8')
+            df.to_csv(annotated_folder + '/' + files.replace('.csv', '_phone.csv'), index=False, encoding='utf-8')
         
+    # ask the user if they want to delete all empty files
+    if len(empty_files) > 0:
+        delete = input('\nDo you want to delete all empty files? (y/n) ')
+        if delete == 'y':
+            print('/n')
+            for files in empty_files:
+                os.remove(folder + '/' + files)
+                print('Deleted ' + files)
+
 
 # Somewhat unfinished, need to discuss this more.
 # Will cut the dataframe using the sampling rate found in the jave code
@@ -194,4 +255,6 @@ if len(sys.argv) < 2 or not os.path.isdir(sys.argv[1]):
     print('Missing folder path or not a folder')
     sys.exit()
 
+
+elim_dupes(sys.argv[1])
 annotate(sys.argv[1])
