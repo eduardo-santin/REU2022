@@ -8,3 +8,14 @@ Human Activity Recognition
 (short paper), 
 Soumyajit Chatterjee and Bivas Mitra (IIT Kharagpur, India); 
 Sandip Chakraborty (Indian Institute of Technology Kharagpur, India)
+
+
+
+Findings from shafiqulislamsumon github page:
+Repos about human activity Recognition that include a dataset folder:
+https://github.com/shafiqulislamsumon/HARESense (Uses the Esense earable recordings for the dataset)
+https://github.com/shafiqulislamsumon/HumanActivityRecognition
+https://github.com/shafiqulislamsumon/EmteqActivityRecognition
+https://github.com/shafiqulislamsumon/HARTransferLearning
+https://github.com/shafiqulislamsumon/HARCNNLSTM
+

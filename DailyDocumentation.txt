@@ -27,3 +27,6 @@ so I dont have to manually do these processes.
 3. Read 3/3 papers sent
 
 
+July 6:
+1.Read and started summary for paper
+2.Reviewing how to apply collected data to the deep learning model used in tutorial
