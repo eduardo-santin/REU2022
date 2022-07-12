@@ -7,6 +7,7 @@ def separate_audio_to_folder(data_folder = 'Data'):
     # if it doesn't exist create new folder for the audio files
     if not os.path.exists('./Annotated_Data') or not os.path.exists('./Annotated_Data/Audio_Data'):
         os.mkdir('./Annotated_Data/Audio_Data')
+        os.mkdir('./Annotated_Data/WAV_Data')
     annotated_folder = os.path.abspath('./Annotated_Data/Audio_Data')  
 
     for files in os.listdir(folder):
@@ -14,9 +15,22 @@ def separate_audio_to_folder(data_folder = 'Data'):
         if files.endswith('.3gpp'):
             os.system('cp ' + folder + '/' + files + ' ' + annotated_folder)
 
+
+
+
+def create_wav(origin_folder, save_folder):
+    
+    for files in os.listdir(origin_folder):
+        # convert the files to wav
+        os.system('ffmpeg -i ' + origin_folder + '/' + files + ' ' + save_folder + '/' + files.split('.')[0] + '.wav')
+        
+
+
+
 # make sure a sys argument is passed in
 if len(sys.argv) < 2 or not os.path.isdir(sys.argv[1]):
     print('Missing folder path or not a folder')
     sys.exit()
 
 separate_audio_to_folder(sys.argv[1])
+create_wav('./Annotated_Data/Audio_Data', './Annotated_Data/WAV_Data')

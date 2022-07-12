@@ -70,9 +70,14 @@ def annotate(data_folder = 'Data'):
 
 
             # label the columns
-            df.columns = ['time', 'Ax', 'Ay', 'Az', 'Wx', 'Wy', 'Wz', 'Activity Label', 'Activity']
+            df.columns = ['time', 'ax', 'ay', 'az', 'wx', 'wy', 'wz', 'activity Label', 'activity']
             # delete the first and second row
             df = df[2:]
+
+            # subtract the unix timestamp from the start time to get how long between the start and end of the recording
+            df['time'] = df['time'] - df['time'].iloc[0]
+            # convert the time to seconds
+            df['time'] = df['time'] / 1000
 
 
     
@@ -80,16 +85,16 @@ def annotate(data_folder = 'Data'):
             # activity label to the corresponding number
             # from our dictionary
             if activity == 'Staying':
-                df['Activity Label'] = activities['Sitting']
+                df['activity Label'] = activities['Sitting']
 
             elif activity == 'Walking':
-                df['Activity Label'] = activities['Walking']
+                df['activity Label'] = activities['Walking']
 
             elif activity == 'Standing':
-                df['Activity Label'] = activities['Standing']
+                df['activity Label'] = activities['Standing']
 
             elif activity == 'Stairs':
-                df['Activity Label'] = activities['Stairs']
+                df['activity Label'] = activities['Stairs']
 
             # add a column for the activity at the end of the dataframe 
             # and fill it with the activity label
@@ -108,7 +113,7 @@ def annotate(data_folder = 'Data'):
                 new_name = split[0]
                 # rename new name with sitting
                 new_name = new_name.replace('Staying', 'Sitting')
-                new_name = new_name + '.csv'
+                new_name = new_name + '_esense.csv'
                 df.to_csv(annotated_folder + '/' + new_name, index=False) 
                 
 
@@ -123,6 +128,14 @@ def annotate(data_folder = 'Data'):
         if files.endswith('.csv'):
             df = pd.read_csv(folder + '/' + files)
 
+
+            if df.empty:
+                print(files + ' is empty')
+                # collect the file name in a list
+                empty_files.append(files)
+                continue
+
+
             # grab the first word of the file name so we can label
             # the dataframe with the activity
             activity = files.split(' ')[0]
@@ -133,22 +146,22 @@ def annotate(data_folder = 'Data'):
                 df.drop(columns='Unnamed: 7', inplace=True)
 
             if activity == 'Sitting':
-                df['Activity Label'] = activities['Sitting']
+                df['activity Label'] = activities['Sitting']
 
             elif activity == 'Walking':
-                df['Activity Label'] = activities['Walking']
+                df['activity Label'] = activities['Walking']
 
             elif activity == 'Standing':
-                df['Activity Label'] = activities['Standing']
+                df['activity Label'] = activities['Standing']
 
             elif activity == 'Stairs':
-                df['Activity Label'] = activities['Stairs']
+                df['activity Label'] = activities['Stairs']
 
 
 
             # add a column for the activity at the end of the dataframe 
             # and fill it with the activity label
-            df['Activity'] = activity
+            df['activity'] = activity
     
             # save the dataframe to a csv, writing phone on the end
             # to have some clear distinction between the two dataframes
@@ -247,6 +260,8 @@ def cut_audio(default_time = 30, folder = './Annotated_Data'):
 
             # save the dataframe to a csv
             df.to_csv(folder + '/' + files.replace('.csv', '_cut.csv'), index=False, encoding='utf-8')
+
+
 
 
 

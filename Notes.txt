@@ -10,6 +10,8 @@ Soumyajit Chatterjee and Bivas Mitra (IIT Kharagpur, India);
 Sandip Chakraborty (Indian Institute of Technology Kharagpur, India)
 
 
+The timestamps for the esense recordings are recorded in unix time, millisecond format.
+
 
 Findings from shafiqulislamsumon github page:
 Repos about human activity Recognition that include a dataset folder:
@@ -19,3 +21,7 @@ https://github.com/shafiqulislamsumon/EmteqActivityRecognition
 https://github.com/shafiqulislamsumon/HARTransferLearning
 https://github.com/shafiqulislamsumon/HARCNNLSTM
 
+Process the acoustic signal directly instead of generating mel-spectrogram on deep learning framework:
+https://arxiv.org/pdf/1610.00087.pdf
+https://gitlab.com/massabe/very-deep-convolutional-neural-networks-for-raw-waveforms-with-pytorch/-/blob/master/CNN%20.ipynb
+https://github.com/vivek081166/raw-audio-deep-learning

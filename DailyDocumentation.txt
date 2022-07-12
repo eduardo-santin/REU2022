@@ -30,3 +30,16 @@ so I dont have to manually do these processes.
 July 6:
 1.Read and started summary for paper
 2.Reviewing how to apply collected data to the deep learning model used in tutorial
+
+July 7.
+1.Read papers and started searching for github repos with raw audio input data for deep network
+
+July 8.
+1. Read paper Dr.Roy suggested
+2. Researching how to modify our data to fit the pytorch model from tutorial.
+
+July 11.
+1. Finished data visualization for the csv data of the recording,
+changed unix timestamps to recorded time in seconds.
+2. Converted all 3gpp data files to wav, needed for the visualization and propbably useful for future use
+3. Started revising some research papers to better understand and revise.
