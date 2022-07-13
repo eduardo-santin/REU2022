@@ -1,0 +1,2 @@
+url template = https://www.youtube.com/watch?v=____
+
