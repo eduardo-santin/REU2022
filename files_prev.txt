@@ -1,2 +1,2 @@
-url template = https://www.youtube.com/watch?v=____
+url template = https://www.youtube.com/watch?v=
 
