@@ -1,14 +1,14 @@
 import os, sys
 
 
-def separate_audio_to_folder(data_folder = 'Data'):
+def separate_audio_to_folder(data_folder = 'New_Data'):
     folder = os.path.abspath(data_folder)
 
     # if it doesn't exist create new folder for the audio files
-    if not os.path.exists('./Annotated_Data') or not os.path.exists('./Annotated_Data/Audio_Data'):
-        os.mkdir('./Annotated_Data/Audio_Data')
-        os.mkdir('./Annotated_Data/WAV_Data')
-    annotated_folder = os.path.abspath('./Annotated_Data/Audio_Data')  
+    if not os.path.exists('./Annotated_Data2') or not os.path.exists('./Annotated_Data2/Audio_Data'):
+        os.mkdir('./Annotated_Data2/Audio_Data')
+        os.mkdir('./Annotated_Data2/WAV_Data')
+    annotated_folder = os.path.abspath('./Annotated_Data2/Audio_Data')  
 
     for files in os.listdir(folder):
         #copy the files to the annotated folder
@@ -19,9 +19,12 @@ def separate_audio_to_folder(data_folder = 'Data'):
 
 
 def create_wav(origin_folder, save_folder):
-    
+    print('Creating wav files...')
+    print('Origin folder: ' + origin_folder)
     for files in os.listdir(origin_folder):
+        print('entre')
         # convert the files to wav
+        print('Converting ' + files + ' to wav...')
         os.system('ffmpeg -i ' + origin_folder + '/' + files + ' ' + save_folder + '/' + files.split('.')[0] + '.wav')
         
 
@@ -33,4 +36,4 @@ if len(sys.argv) < 2 or not os.path.isdir(sys.argv[1]):
     sys.exit()
 
 separate_audio_to_folder(sys.argv[1])
-create_wav('./Annotated_Data/Audio_Data', './Annotated_Data/WAV_Data')
+create_wav('./Annotated_Data2/Audio_Data', './Annotated_Data2/WAV_Data')

@@ -43,3 +43,10 @@ July 11.
 changed unix timestamps to recorded time in seconds.
 2. Converted all 3gpp data files to wav, needed for the visualization and propbably useful for future use
 3. Started revising some research papers to better understand and revise.
+
+July 12 - 15
+1. Audio Set dataset
+2. Made scripts to decode the labels and to assign each decoded label name to each item in the dataset.
+3. Started going through sample clips of the dataset to assign which samples included repetitive hand movement, if they had speech.
+
+

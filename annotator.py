@@ -9,6 +9,9 @@ activities = {
     'Walking': '3',
     'Standing': '2',
     'Stairs': '4',
+    'Typing': '5',
+    'Knocking': '6',
+    'Drawer': '7',
 }
 
 
@@ -32,16 +35,16 @@ def elim_dupes(data_folder = 'Data'):
 
 
 
-def annotate(data_folder = 'Data'):
+def annotate(data_folder = 'New_Data'):
     folder = os.path.abspath(data_folder)
 
     # if it doesn't exist create new folder for annotated data
-    if not os.path.exists('./Annotated_Data'):
-        os.mkdir('./Annotated_Data')
+    if not os.path.exists('./Annotated_Data2'):
+        os.mkdir('./Annotated_Data2')
     # create folder for the csv files
-    if not os.path.exists('./Annotated_Data/CSV_Data'):
-        os.mkdir('./Annotated_Data/CSV_Data')
-    annotated_folder = os.path.abspath('./Annotated_Data/CSV_Data')
+    if not os.path.exists('./Annotated_Data2/CSV_Data'):
+        os.mkdir('./Annotated_Data2/CSV_Data')
+    annotated_folder = os.path.abspath('./Annotated_Data2/CSV_Data')
     
     # sometimes the esense earable disconnects
     # right before recording or it does not update the visualizer that it's disconnected
@@ -58,6 +61,8 @@ def annotate(data_folder = 'Data'):
             # the dataframe with the activity
             activity = files.split('_')[0]
             activity = activity.capitalize()
+            print('entre')
+            print(activity)
 
             
             df = pd.read_excel(folder + '/' + files, engine='xlrd')
@@ -84,21 +89,21 @@ def annotate(data_folder = 'Data'):
             # depending on the activity, we change the 
             # activity label to the corresponding number
             # from our dictionary
-            if activity == 'Staying':
-                df['activity Label'] = activities['Sitting']
+            if activity == 'Typing':
+                df['activity Label'] = activities['Typing']
 
-            elif activity == 'Walking':
-                df['activity Label'] = activities['Walking']
+            elif activity == 'Drawer':
+                df['activity Label'] = activities['Drawer']
 
-            elif activity == 'Standing':
-                df['activity Label'] = activities['Standing']
+            elif activity == 'Knocking':
+                df['activity Label'] = activities['Knocking']
 
             elif activity == 'Stairs':
                 df['activity Label'] = activities['Stairs']
 
             # add a column for the activity at the end of the dataframe 
             # and fill it with the activity label
-            df['Activity'] = activity
+            df['activity'] = activity
 
             # The recording for sitting and standing was done with the same
             # label in the esense app since the phone app did not have a different
@@ -106,22 +111,13 @@ def annotate(data_folder = 'Data'):
             # The standing recordings were renamed accordingly instead
             # of the sitting recordings. So to fix this all esense files starting
             # with staying are renamed to sitting to avoid confusion due to my mistake.
-            if activity == 'Staying':
-                # save the file as a csv and replace staying with 
-                #sitting 
-                split = files.split('.')
-                new_name = split[0]
-                # rename new name with sitting
-                new_name = new_name.replace('Staying', 'Sitting')
-                new_name = new_name + '_esense.csv'
-                df.to_csv(annotated_folder + '/' + new_name, index=False) 
+            
                 
 
             
-            else:
-            # save the dataframe to a csv, writing esense on the end
-            # to have some clear distinction between the two dataframes
-                df.to_csv(annotated_folder+ '/' + files.replace('.xls', '_esense.csv'), index=False, encoding='utf-8')
+
+            print('saving ' + files)
+            df.to_csv(annotated_folder+ '/' + files.replace('.xls', '_esense.csv'), index=False, encoding='utf-8')
 
 
         #For the data recorded on the smartphone app
@@ -266,10 +262,10 @@ def cut_audio(default_time = 30, folder = './Annotated_Data'):
 
 
 # make sure a sys argument is passed in
-if len(sys.argv) < 2 or not os.path.isdir(sys.argv[1]):
-    print('Missing folder path or not a folder')
-    sys.exit()
+# if len(sys.argv) < 2 or not os.path.isdir(sys.argv[1]):
+#     print('Missing folder path or not a folder')
+#     sys.exit()
 
 
-elim_dupes(sys.argv[1])
-annotate(sys.argv[1])
+elim_dupes()
+annotate()

@@ -31,12 +31,12 @@ def graph_audio(folder):
         plt.title(file.split('.')[0])
         plt.plot(x, y)
         # save the graph
-        plt.savefig('./Graph_Data/Audio/' + file.split('.')[0] + '.png')
+        plt.savefig('./Graph_Data2/Audio/' + file.split('.')[0] + '.png')
         # close the graph
         plt.close()
         
 def graph_csv(folder):
-    folder = os.path.abspath('./Annotated_Data/CSV_Data')
+    folder = os.path.abspath('./Annotated_Data2/CSV_Data')
     for file in os.listdir(folder):
         # get the data from the csv file
         data = pd.read_csv(folder + '/' + file)
@@ -89,7 +89,7 @@ def graph_csv(folder):
         ax[1].plot(data['time'], data['wz'], label = 'Z')
         ax[1].legend()
         # save the graph
-        plt.savefig('./Graph_Data/CSV/' + file.split('.')[0] + '.png')
+        plt.savefig('./Graph_Data2/CSV/' + file.split('.')[0] + '.png')
         # close the graph
         plt.close()
 
@@ -100,19 +100,19 @@ def graph_csv(folder):
 
 
 
-def create_graphs(data_folder = 'Data'):
+def create_graphs(data_folder = 'New_Data'):
     folder =  os.path.abspath(data_folder)
 
     #create directory and subdirectories if they don't exist
-    if not os.path.exists('./Graph_Data'):
-        os.mkdir('./Graph_Data')
+    if not os.path.exists('./Graph_Data2'):
+        os.mkdir('./Graph_Data2')
         # make subdirectories for audio and csv files
-        os.mkdir('./Graph_Data/Audio')
-        os.mkdir('./Graph_Data/CSV')
+        os.mkdir('./Graph_Data2/Audio')
+        os.mkdir('./Graph_Data2/CSV')
         
     
-    audio_data_folder = os.path.abspath('./Annotated_Data/WAV_Data')
-    csv_data_folder = os.path.abspath('./Annotated_Data/CSV_Data')
+    audio_data_folder = os.path.abspath('./Annotated_Data2/WAV_Data')
+    csv_data_folder = os.path.abspath('./Annotated_Data2/CSV_Data')
 
     print('Creating graphs for audio data...')
     graph_audio(audio_data_folder)
