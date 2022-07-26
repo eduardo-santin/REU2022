@@ -22,7 +22,10 @@ def create_wav(origin_folder, save_folder):
     print('Creating wav files...')
     print('Origin folder: ' + origin_folder)
     for files in os.listdir(origin_folder):
-        print('entre')
+        # if file already exists, skip it
+        file = files.replace('.3gpp', '.wav')
+        if os.path.exists(save_folder + '/' + file):
+            continue
         # convert the files to wav
         print('Converting ' + files + ' to wav...')
         os.system('ffmpeg -i ' + origin_folder + '/' + files + ' ' + save_folder + '/' + files.split('.')[0] + '.wav')
