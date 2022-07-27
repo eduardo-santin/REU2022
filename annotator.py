@@ -1,17 +1,16 @@
 import os, sys, hashlib
+from re import A
 import pandas as pd
 import numpy as np
 # import time, calendar
 
 # dictionary of activities
 activities = {
-    'Sitting': '1',
-    'Walking': '3',
-    'Standing': '2',
-    'Stairs': '4',
-    'Typing': '5',
-    'Knocking': '6',
-    'Drawer': '7',
+    'Typing': 1,
+    'Drawer': 2,
+    'Knocking': 3,
+    'Chopping': 4,
+    'Walking': 5, 
 }
 
 
@@ -35,7 +34,7 @@ def elim_dupes(data_folder = 'Data'):
 
 
 
-def annotate(data_folder = 'New_Data'):
+def annotate(save_folder, data_folder = 'New_Data'):
     folder = os.path.abspath(data_folder)
 
     # if it doesn't exist create new folder for annotated data
@@ -44,7 +43,12 @@ def annotate(data_folder = 'New_Data'):
     # create folder for the csv files
     if not os.path.exists('./Annotated_Data2/CSV_Data'):
         os.mkdir('./Annotated_Data2/CSV_Data')
-    annotated_folder = os.path.abspath('./Annotated_Data2/CSV_Data')
+    
+    # create folder for indicated person
+    if not os.path.exists('./Annotated_Data2/CSV_Data/' + save_folder):
+        os.mkdir('./Annotated_Data2/CSV_Data/' + save_folder)
+        
+    annotated_folder = os.path.abspath('./Annotated_Data2/CSV_Data/' + save_folder)
     
     # sometimes the esense earable disconnects
     # right before recording or it does not update the visualizer that it's disconnected
@@ -59,9 +63,9 @@ def annotate(data_folder = 'New_Data'):
         if files.endswith('.xls'):
             # grab the first word of the file name so we can label
             # the dataframe with the activity
-            activity = files.split('_')[0]
+            activity = files.split('_')[1]
             activity = activity.capitalize()
-            print('entre')
+            # print('entre')
             print(activity)
 
             
@@ -89,34 +93,17 @@ def annotate(data_folder = 'New_Data'):
             # depending on the activity, we change the 
             # activity label to the corresponding number
             # from our dictionary
-            if activity == 'Typing':
-                df['activity Label'] = activities['Typing']
-
-            elif activity == 'Drawer':
-                df['activity Label'] = activities['Drawer']
-
-            elif activity == 'Knocking':
-                df['activity Label'] = activities['Knocking']
-
-            elif activity == 'Stairs':
-                df['activity Label'] = activities['Stairs']
+            df['activity Label'] = activities[activity]
 
             # add a column for the activity at the end of the dataframe 
             # and fill it with the activity label
             df['activity'] = activity
-
-            # The recording for sitting and standing was done with the same
-            # label in the esense app since the phone app did not have a different
-            # label for the sitting and standing activities.
-            # The standing recordings were renamed accordingly instead
-            # of the sitting recordings. So to fix this all esense files starting
-            # with staying are renamed to sitting to avoid confusion due to my mistake.
-            
-                
-
             
 
-            print('saving ' + files)
+            files = save_folder + '_' + files
+            
+            # print('saving ' + files)
+            # add name to the start of the file name
             df.to_csv(annotated_folder+ '/' + files.replace('.xls', '_esense.csv'), index=False, encoding='utf-8')
 
 
@@ -227,7 +214,7 @@ def cut_audio(default_time = 30, folder = './Annotated_Data'):
             df = df[start_cut:-end_cut]
             
             # save the dataframe to a csv
-            df.to_csv(folder + '/' + files.replace('_esense.csv', '_esense_cut.csv'), index=False, encoding='utf-8')
+            # df.to_csv(save + '/' + files.replace('_esense.csv', '_esense_cut.csv'), index=False, encoding='utf-8')
 
         if files.endswith('_phone.csv'):
             # read the csv file
@@ -251,6 +238,7 @@ def cut_audio(default_time = 30, folder = './Annotated_Data'):
                 start_cut = cut_amount_samples // 2
                 end_cut = cut_amount_samples // 2
 
+
             # cut the the columns of the dataframe
             df = df[start_cut:-end_cut]
 
@@ -262,10 +250,19 @@ def cut_audio(default_time = 30, folder = './Annotated_Data'):
 
 
 # make sure a sys argument is passed in
-# if len(sys.argv) < 2 or not os.path.isdir(sys.argv[1]):
-#     print('Missing folder path or not a folder')
-#     sys.exit()
+if len(sys.argv) < 2 or not os.path.isdir(sys.argv[1]):
+    print('Missing folder path or not a folder')
+    
+    sys.exit()
 
+folder = sys.argv[1] + '/' + sys.argv[2]
+# make sure second directory is passed in
+if len(sys.argv) < 3 or not os.path.isdir(folder):
+    print('Missing folder path or not a folder 2')
+    
+    sys.exit()
 
 elim_dupes()
-annotate()
+annotate(sys.argv[2], folder)
+
+

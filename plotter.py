@@ -7,9 +7,10 @@ import wave
 import datetime
 
 from requests import head
+from torch import scatter_reduce
 
 
-def graph_audio(folder):
+def graph_audio(folder, name):
     for file in os.listdir(folder):
         #graph the wav file
         wav = wave.open(folder + '/' + file, 'r')
@@ -31,12 +32,11 @@ def graph_audio(folder):
         plt.title(file.split('.')[0])
         plt.plot(x, y)
         # save the graph
-        plt.savefig('./Graph_Data2/Audio/' + file.split('.')[0] + '.png')
+        plt.savefig('./Graph_Data2/Audio/' + name + '/' + file.split('.')[0] + '.png')
         # close the graph
         plt.close()
         
-def graph_csv(folder):
-    folder = os.path.abspath('./Annotated_Data2/CSV_Data')
+def graph_csv(folder, name):
     for file in os.listdir(folder):
         # get the data from the csv file
         data = pd.read_csv(folder + '/' + file)
@@ -89,7 +89,7 @@ def graph_csv(folder):
         ax[1].plot(data['time'], data['wz'], label = 'Z')
         ax[1].legend()
         # save the graph
-        plt.savefig('./Graph_Data2/CSV/' + file.split('.')[0] + '.png')
+        plt.savefig('./Graph_Data2/CSV/' + name + '/' + file.split('.')[0] + '.png')
         # close the graph
         plt.close()
 
@@ -100,7 +100,7 @@ def graph_csv(folder):
 
 
 
-def create_graphs(data_folder = 'New_Data'):
+def create_graphs(save_folder, data_folder = 'New_Data'):
     folder =  os.path.abspath(data_folder)
 
     #create directory and subdirectories if they don't exist
@@ -109,20 +109,36 @@ def create_graphs(data_folder = 'New_Data'):
         # make subdirectories for audio and csv files
         os.mkdir('./Graph_Data2/Audio')
         os.mkdir('./Graph_Data2/CSV')
+    # create folder for indicated person
+    if not os.path.exists('./Graph_Data2/Audio/' + save_folder):
+        os.mkdir('./Graph_Data2/Audio/' + save_folder)
+    if not os.path.exists('./Graph_Data2/CSV/' + save_folder):
+        os.mkdir('./Graph_Data2/CSV/' + save_folder)
         
     
-    audio_data_folder = os.path.abspath('./Annotated_Data2/WAV_Data')
-    csv_data_folder = os.path.abspath('./Annotated_Data2/CSV_Data')
+        
+    
+    audio_data_folder = os.path.abspath('./Annotated_Data2/WAV_Data/' + save_folder)
+    csv_data_folder = os.path.abspath('./Annotated_Data2/CSV_Data/' + save_folder)
 
     print('Creating graphs for audio data...')
-    graph_audio(audio_data_folder)
+    graph_audio(audio_data_folder, save_folder)
     print('Creating graphs for csv data...')
-    graph_csv(csv_data_folder)
+    graph_csv(csv_data_folder, save_folder)
 
 
 # make sure a sys argument is passed in
-# if len(sys.argv) < 2 or not os.path.isdir(sys.argv[1]):
-#     print('Missing folder path or not a folder')
-#     sys.exit()
+if len(sys.argv) < 2 or not os.path.isdir(sys.argv[1]):
+    print('Missing folder path or not a folder')
+    
+    sys.exit()
 
-create_graphs()
+folder = sys.argv[1] + '/' + sys.argv[2]
+# make sure second directory is passed in
+if len(sys.argv) < 3 or not os.path.isdir(folder):
+    print('Missing folder path or not a folder 2')
+    
+    sys.exit()
+
+
+create_graphs(sys.argv[2], folder)
