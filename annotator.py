@@ -63,7 +63,7 @@ def annotate(save_folder, data_folder = 'New_Data'):
         if files.endswith('.xls'):
             # grab the first word of the file name so we can label
             # the dataframe with the activity
-            activity = files.split('_')[1]
+            activity = files.split('_')[0]
             activity = activity.capitalize()
             # print('entre')
             print(activity)
