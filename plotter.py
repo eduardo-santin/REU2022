@@ -3,36 +3,45 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import os, sys
-import wave
+# import wave
 import datetime
-
-from requests import head
-from torch import scatter_reduce
+import scipy.io.wavfile as wav
 
 
 def graph_audio(folder, name):
-    for file in os.listdir(folder):
+    for files in os.listdir(folder):
         #graph the wav file
-        wav = wave.open(folder + '/' + file, 'r')
-        data = wav.readframes(wav.getnframes())
-        data = np.frombuffer(data, dtype=np.int16)
-        # label the x-axis
-        x = np.linspace(0, len(data), len(data))
-        plt.xlabel('Time (s)')
+        wavedata = os.path.join(folder, files)
+        sampleRate, audioBuffer = wav.read(wavedata)
+        duration = len(audioBuffer)/sampleRate
 
-        #label the y-axis
-        y = data
+        time = np.arange(0,duration,1/sampleRate) #time vector
+
+        # limit the x axis to the duration of the audio file
+        plt.xlim(0, duration)
+        plt.plot(time,audioBuffer)
+        plt.xlabel('Time [s]')
         plt.ylabel('Amplitude')
+        plt.title(files.split('.')[0])
+        # data = wav.readframes(wav.getnframes())
+        # data = np.frombuffer(data, dtype=np.int16)
+        # # label the x-axis
+        # x = np.linspace(0, len(data), len(data))
+        # plt.xlabel('Time (s)')
 
-        #make the x and y axis cap at the max and min values
-        plt.xlim(0, len(data))
-        plt.ylim(min(data), max(data))
+        # #label the y-axis
+        # y = data
+        # plt.ylabel('Amplitude')
 
-        # title the graph with the file name
-        plt.title(file.split('.')[0])
-        plt.plot(x, y)
+        # #make the x and y axis cap at the max and min values
+        # plt.xlim(0, len(data))
+        # plt.ylim(min(data), max(data))
+
+        # # title the graph with the file name
+        # plt.title(file.split('.')[0])
+        # plt.plot(x, y)
         # save the graph
-        plt.savefig('./Graph_Data2/Audio/' + name + '/' + file.split('.')[0] + '.png')
+        plt.savefig('./Graph_Data2/Audio/' + name + '/' + files.split('.')[0] + '.png')
         # close the graph
         plt.close()
         
