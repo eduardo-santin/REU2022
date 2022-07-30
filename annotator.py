@@ -161,7 +161,7 @@ def annotate(save_folder, data_folder = 'New_Data'):
 
 
 # Somewhat unfinished, need to discuss this more.
-# Will cut the dataframe using the sampling rate found in the jave code
+# Will cut the dataframe using the sampling rate found in the java code
 # and found in the accelerometer phone app accordingly
 def cut_audio(default_time = 30, folder = './Annotated_Data'):
     

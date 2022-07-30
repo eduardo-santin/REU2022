@@ -1,0 +1,32 @@
+Miki: 
+possible activitie markings:
+timestamp: 2022/07/26 15:22:10 - 15:23:20
+activity: typing
+
+timestamp: 2022/07/26 15:26:30 - 15:27:30
+activity: drawer
+
+timestamp: 2022/07/26 15:32:10 - 15:33:20
+activity: knocking
+
+timestamp: 2022/07/26 15:36:05~ - 15:37:20 
+activity: chopping
+
+timestamp: 2022/07/26 15:39:20 - 15:40:40
+activity: walking
+
+Avi:
+Sensor cut out and has no data matching the timestamps in the spreadsheet
+
+Adam:
+timestamp: 2022/07/26 12:45:45 - 12:46:58
+possible activity: knocking
+
+timestamp: 2022/07/26 12:50:00 - 12:51:15
+possible activity: chopping
+
+other activities: either not a vissible signal in given time in spreadsheet
+or just too much activity to determine start and end
+
+Marc and Tim:
+Files had imu data for timestamps that dont correlate to their recording timesA
